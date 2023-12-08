@@ -20,4 +20,17 @@ contract Blog {
 
     mapping(uint256 => Post) private idToPost;
     mapping(string => Post) private hashToPost;
+
+    // we can create listeners for events in the client and use them in The Graph  
+    event PostCreated(uint id, string title, string hash);
+    event PostUpdated(uint id, string title, string hash, bool published);
+
+    // setting the contract deployer as the owner
+    constructor(string memory _name) {
+        console.log("Deploying Blog with name:", _name);
+        name = _name;
+        owner = msg.sender;
+    }
+
+
 }
