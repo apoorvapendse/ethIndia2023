@@ -20,6 +20,10 @@ contract Blog {
 
     mapping(uint256 => Post) private idToPost;
     mapping(string => Post) private hashToPost;
+     modifier onlyOwner() {
+      require(msg.sender == owner);
+    _;
+  }
 
     // we can create listeners for events in the client and use them in The Graph  
     event PostCreated(uint id, string title, string hash);
@@ -67,6 +71,22 @@ contract Blog {
         emit PostUpdated(post.id, title, hash, published);
     }
 
-    
+     function fetchPosts() public view returns (Post[] memory) {
+        uint itemCount = _postIds.current();
+        uint currentIndex = 0;
+
+        Post[] memory posts = new Post[](itemCount);
+        //copying posts into the array;
+        for (uint i = 0; i < itemCount; i++) {
+            uint currentId = i + 1;
+            Post storage currentItem = idToPost[currentId];
+            posts[currentIndex] = currentItem;
+            currentIndex += 1;
+            posts[i] = currentItem;
+        }
+        return posts;
+    }
+
+
 
 }
