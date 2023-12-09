@@ -3,6 +3,7 @@ import './App.css';
 import ParticipationNFT from './components/ParticipationNFT';
 import Home from './components/Home';
 import abi from './NFT_ABI/NFTabi.js'
+import Navbar from './components/Navbar.jsx';
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
 
     <BrowserRouter>
       <Routes>
+    
         <Route path="/" element={<Home />} />
         <Route path="/mint" element={<ParticipationNFT />} />
       </Routes>
