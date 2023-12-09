@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import {Link} from 'react-router-dom'
 import { PlanCard,Button,Typography } from '@web3uikit/core';
 const Home = () => {
@@ -97,4 +98,16 @@ const Home = () => {
   )
 }
 
+=======
+import {Link} from 'react-router-dom'
+const Home = () => {
+  return (
+    <>
+    <h1>Home</h1>
+    <Link to={"/mint"}>mintNFT</Link>
+    </>
+  )
+}
+
+>>>>>>> 9b93d2e2e86d811d72aa3777c68ddde2063258ac
 export default Home
