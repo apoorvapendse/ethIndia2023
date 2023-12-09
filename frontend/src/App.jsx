@@ -2,9 +2,14 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 import ParticipationNFT from './components/ParticipationNFT';
 import Home from './components/Home';
+import abi from './NFT_ABI/NFTabi.js'
 
 function App() {
+
+  
+
   return (
+
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />

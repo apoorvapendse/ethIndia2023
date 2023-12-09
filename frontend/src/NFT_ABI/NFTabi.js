@@ -1,4 +1,5 @@
-[
+
+const data = [
 	{
 		"inputs": [
 			{
@@ -494,3 +495,4 @@
 		"type": "function"
 	}
 ]
+export default data;
