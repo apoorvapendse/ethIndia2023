@@ -14,18 +14,21 @@ async function getImage(_imageURL) {
 export default async function minNFT(
   _imageURL,
   nftName,
+  nftDesc,
   _hackathonName,
   _hackathonID,
-  _participantName
+  _participantName,
+  _participantID
 ) {
   const image = await getImage(_imageURL); // Await the image here
   const nft = {
     image,
-    name: "eth23NFT",
-    description: "NFT acknowledging participation in the hackathon",
+    name: nftName,
+    description: nftDesc,
     HackathonName: _hackathonName,
     HackathonID: _hackathonID,
     participantName: _participantName,
+    participantID:_participantID
   };
 
   const client = new NFTStorage({
