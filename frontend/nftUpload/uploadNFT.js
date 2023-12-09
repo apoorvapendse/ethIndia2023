@@ -1,15 +1,15 @@
-import { NFTStorage } from 'nft.storage';
+// import { NFTStorage } from "nft.storage";
 
-const NFT_STORAGE_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGZiNjBlQ0ExNzZiNWFEOTE5MUNlRTQxZDNFMkFjQ2YwQmEwNDUxOWIiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTcwMjA5NzY5MTI2MiwibmFtZSI6ImV0aGluZGlhMjAyMyJ9.1VVlEqWtKT_mSvc5e8MfF0EAK1DwLw735qowWzpcEsE';
+// const NFT_STORAGE_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGZiNjBlQ0ExNzZiNWFEOTE5MUNlRTQxZDNFMkFjQ2YwQmEwNDUxOWIiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTcwMjA5NzY5MTI2MiwibmFtZSI6ImV0aGluZGlhMjAyMyJ9.1VVlEqWtKT_mSvc5e8MfF0EAK1DwLw735qowWzpcEsE';
 
-async function getImage(_imageURL) {
-  const imageLink = _imageURL;
-  const r = await fetch(imageLink);
-  if (!r.ok) {
-    throw new Error(`error fetching image: [${r.statusCode}]: ${r.status}`);
-  }
-  return await r.blob(); // Await the blob here
-}
+// async function getImage(_imageURL) {
+//   const imageLink = _imageURL;
+//   const r = await fetch(imageLink);
+//   if (!r.ok) {
+//     throw new Error(`error fetching image: [${r.statusCode}]: ${r.status}`);
+//   }
+//   return await r.blob(); // Await the blob here
+// }
 
 export default async function minNFT(
   _imageURL,
@@ -18,7 +18,7 @@ export default async function minNFT(
   _hackathonID,
   _participantName
 ) {
-  const image = await getImage(_imageURL); // Await the image here
+  const image = "hello.jpm" //await getImage(_imageURL); // Await the image here
   const nft = {
     image,
     name: "eth23NFT",

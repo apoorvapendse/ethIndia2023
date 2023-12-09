@@ -51,6 +51,7 @@ contract Devfolio{
 
     struct Hackathon{
         address organizer;
+        string name;
         uint participantCount;
         uint participantLimit;
         mapping(address => bool) hasParticipantMadeValidSubmission;
