@@ -1,6 +1,7 @@
 import React,{useEffect,useState} from 'react'
 import abiData from '../NFT_ABI/NFTabi.js'
 import { ethers } from "ethers";
+import minNFT from '../../nftUpload/uploadNFT.js';
 
 const ParticipationNFT = () => {
 
@@ -46,8 +47,12 @@ const ParticipationNFT = () => {
       provider && wallet();
     }, []);
 
+    async function handleSubmit(e){
+        e.preventDefault();
+    }
+
     return (
-        <>
+        <form onSubmit={handleSubmit}>
            
 
                 <input type="url" name="" id="" placeholder='Enter Image URL' />
@@ -65,10 +70,10 @@ const ParticipationNFT = () => {
                 <input type='text' placeholder='Enter Participant ID' />
                 <br />
                 <input type='text' placeholder='Enter NFT name' />
-
+                <button type="submit">Generate and send NFT</button>
 
             
-        </>
+        </form>
     )
 }
 
