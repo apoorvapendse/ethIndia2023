@@ -16,7 +16,9 @@ import AdbIcon from '@mui/icons-material/Adb';
 
 const pages = [
   {url:"/",name:'Home'},
-  {url:"/mint",name:'Mint'}
+  {url:"/mint",name:'Mint'},
+  {url:"/list",name:'List'},
+  {url:"/create-hackathon",name:'Create Hackathon'},
 
 ];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
