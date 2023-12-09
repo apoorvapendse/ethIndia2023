@@ -113,8 +113,8 @@
       ]
     },
     "C:\\Users\\arya2\\Desktop\\kek\\ethIndia2023\\contracts\\Devfolio.sol": {
-      "lastModificationDate": 1702107217348,
-      "contentHash": "6527dac0120a08b5ecf0e680e498f429",
+      "lastModificationDate": 1702116318468,
+      "contentHash": "78e60d1e88b6553305b76d29828ae4e6",
       "sourceName": "contracts/Devfolio.sol",
       "solcConfig": {
         "version": "0.8.20",
@@ -140,7 +140,9 @@
           }
         }
       },
-      "imports": [],
+      "imports": [
+        "@openzeppelin/contracts/token/ERC721/ERC721.sol"
+      ],
       "versionPragmas": [
         "^0.8.0"
       ],
