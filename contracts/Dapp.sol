@@ -57,4 +57,16 @@ contract Blog {
         emit PostCreated(postId, title, hash);
     }
 
+    function updatePost(uint postId, string memory title, string memory hash, bool published) public onlyOwner {
+        Post storage post =  idToPost[postId];
+        post.title = title;
+        post.published = published;
+        post.content = hash;
+        idToPost[postId] = post;
+        hashToPost[hash] = post;
+        emit PostUpdated(post.id, title, hash, published);
+    }
+
+    
+
 }
