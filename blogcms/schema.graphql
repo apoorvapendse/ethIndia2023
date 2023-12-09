@@ -6,6 +6,8 @@ type _Schema_
     include: [{ entity: "Post", fields: [{ name: "title" }, { name: "postContent" }] }]
   )
 
+
+# gql type definition
 type Post @entity {
   id: ID!
   title: String!
