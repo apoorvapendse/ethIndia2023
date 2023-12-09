@@ -32,5 +32,29 @@ contract Blog {
         owner = msg.sender;
     }
 
+    function updateName(string memory _name) public {
+        name = _name;
+    }
+
+    function transferOwnership(address newOwner) public onlyOwner {
+        owner = newOwner;
+    }
+
+    /* fetches an individual post by the content hash */
+    function fetchPost(string memory hash) public view returns(Post memory){
+      return hashToPost[hash];
+    }
+
+     function createPost(string memory title, string memory hash) public onlyOwner {
+        _postIds.increment();
+        uint postId = _postIds.current();
+        Post storage post = idToPost[postId];
+        post.id = postId;
+        post.title = title;
+        post.published = true;
+        post.content = hash;
+        hashToPost[hash] = post;
+        emit PostCreated(postId, title, hash);
+    }
 
 }
