@@ -11,7 +11,7 @@ import {
 } from '../config'
 
 /* import Application Binary Interface (ABI) */
-import Blog from '../artifacts/contracts/Blog.sol/Blog.json'
+import Blog from '../../artifacts/contracts/Devfolio.sol/Blog.json'
 
 export default function Home(props) {
   /* posts are fetched server side and passed in as props */

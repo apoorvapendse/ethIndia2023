@@ -2,11 +2,11 @@
 pragma solidity ^0.8.0;
 
 import "hardhat/console.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
+
 
 contract Blog {
-    using Counters for Counters.Counter;
-    Counters.Counter private _postIds;
+   
+    uint256 private _postIds;
 
     string public name;
     address public owner;
@@ -50,8 +50,8 @@ contract Blog {
     }
 
      function createPost(string memory title, string memory hash) public onlyOwner {
-        _postIds.increment();
-        uint postId = _postIds.current();
+        _postIds++;
+        uint postId = _postIds;
         Post storage post = idToPost[postId];
         post.id = postId;
         post.title = title;
@@ -72,7 +72,7 @@ contract Blog {
     }
 
      function fetchPosts() public view returns (Post[] memory) {
-        uint itemCount = _postIds.current();
+        uint itemCount = _postIds;
         uint currentIndex = 0;
 
         Post[] memory posts = new Post[](itemCount);
