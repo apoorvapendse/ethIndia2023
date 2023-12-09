@@ -1,92 +1,134 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "hardhat/console.sol";
+contract Devfolio{
+    address public admin;
+    uint256 creationAmount;
+    uint hackathonCount;
+    
+    mapping(uint=>Hackathon) hackathons;
+
+    bytes public gitUrl = "https://github.com/";
+
+    event HackthonCreated( address organizer,
+        uint participantCount,
+        uint participantLimit,
+        uint256 _amountpaid,
+        uint256 stakeAmount,
+        uint256 expiryTime);
+    event ParticipateHack( address organizer,
+        uint participantCount,
+        uint participantLimit,
+        uint256 _amountpaid,
+        uint256 stakeAmount,
+        uint256 expiryTime);
+    event SubmittedHack(address organizer,
+        uint participantCount,
+        uint participantLimit,
+        uint256 _amountpaid,
+        uint256 stakeAmount,
+        uint256 expiryTime);
 
 
-contract Blog {
    
-    uint256 private _postIds;
 
-    string public name;
-    address public owner;
-
-    struct Post {
-        uint256 id;
-        string title;
-        string content;
-        bool published;
+    struct Hackathon{
+        address organizer;
+        uint participantCount;
+        uint participantLimit;
+        mapping(address => bool) hasParticipantMadeValidSubmission;
+        uint256 stakeAmount;
+        uint256 expiryTime;
     }
 
-    mapping(uint256 => Post) private idToPost;
-    mapping(string => Post) private hashToPost;
-     modifier onlyOwner() {
-      require(msg.sender == owner);
-    _;
-  }
-
-    // we can create listeners for events in the client and use them in The Graph  
-    event PostCreated(uint id, string title, string hash);
-    event PostUpdated(uint id, string title, string hash, bool published);
-
-    // setting the contract deployer as the owner
-    constructor(string memory _name) {
-        console.log("Deploying Blog with name:", _name);
-        name = _name;
-        owner = msg.sender;
+    constructor()
+    {
+        admin = msg.sender;
+        hackathonCount = 0;
+        creationAmount = 1;
     }
 
-    function updateName(string memory _name) public {
-        name = _name;
+    //checks whether hackathon exists and has not expired yet;
+      modifier validHackathon(uint hackathonID){
+        require(hackathons[hackathonID].organizer != address(0), "Hackathon does not exist");
+        require(block.timestamp<hackathons[hackathonID].expiryTime,"Hackathon is already over");
+        _;
     }
 
-    function transferOwnership(address newOwner) public onlyOwner {
-        owner = newOwner;
+    modifier onlyAdmin(){
+        require(msg.sender == admin,"withdrawing hackathon fees can only be done by admin");
+        _;
     }
 
-    /* fetches an individual post by the content hash */
-    function fetchPost(string memory hash) public view returns(Post memory){
-      return hashToPost[hash];
+    function createHackathon(uint _participantLimit, uint256 _stakeAmount, uint256 timeInSeconds) external payable {
+        require(msg.value >= creationAmount, "Insufficient amount to create hackathon");
+
+        Hackathon storage newHackathon = hackathons[hackathonCount];
+        newHackathon.organizer = msg.sender;
+        newHackathon.participantLimit = _participantLimit;
+        newHackathon.participantCount = 0;
+        newHackathon.stakeAmount = _stakeAmount;
+        newHackathon.expiryTime = block.timestamp + timeInSeconds;
+
+        hackathonCount++;
+        payable(admin).transfer(msg.value); 
+        emit HackthonCreated(newHackathon.organizer,newHackathon.participantCount, msg.value,newHackathon.participantLimit, _stakeAmount ,newHackathon.expiryTime );
     }
 
-     function createPost(string memory title, string memory hash) public onlyOwner {
-        _postIds++;
-        uint postId = _postIds;
-        Post storage post = idToPost[postId];
-        post.id = postId;
-        post.title = title;
-        post.published = true;
-        post.content = hash;
-        hashToPost[hash] = post;
-        emit PostCreated(postId, title, hash);
+    function withdrawHackathonFees() public onlyAdmin{
+        require(address(this).balance > 0, "No balance to transfer");
+        payable(admin).transfer(address(this).balance);
     }
 
-    function updatePost(uint postId, string memory title, string memory hash, bool published) public onlyOwner {
-        Post storage post =  idToPost[postId];
-        post.title = title;
-        post.published = published;
-        post.content = hash;
-        idToPost[postId] = post;
-        hashToPost[hash] = post;
-        emit PostUpdated(post.id, title, hash, published);
+
+    function partcipateInHackathon(uint hackathonID) public payable  validHackathon(hackathonID){
+        //check if enough stake amount is sent;
+        require(msg.value >= hackathons[hackathonID].stakeAmount,"insufficient stake amount");
+        Hackathon storage  currentHackathon = hackathons[hackathonID];
+        require(currentHackathon.participantCount<=currentHackathon.participantLimit,"participant limit reached, cannot register!!");
+       
+        hackathons[hackathonID].hasParticipantMadeValidSubmission[msg.sender] = false;
+        hackathons[hackathonID].participantCount++;//increment the participant count;
+        payable(admin).transfer(msg.value);
+        emit ParticipateHack( currentHackathon.organizer,currentHackathon.participantCount, msg.value,currentHackathon.participantLimit, currentHackathon.stakeAmount ,currentHackathon.expiryTime );
     }
 
-     function fetchPosts() public view returns (Post[] memory) {
-        uint itemCount = _postIds;
-        uint currentIndex = 0;
+    // only hackathon organizer can return the stake;
+    function returnStake(uint hackathonID, address participantAddress) external payable 
+    {
+        // require(msg.sender == hackathons[hackathonID].organizer, "Only the organizer can call this function");
+        // require(block.timestamp > hackathons[hackathonID].expiryTime, "Hackathon isn't over yet");
+        // require(msg.value > hackathons[hackathonID].stakeAmount, "Insufficient value sent");
 
-        Post[] memory posts = new Post[](itemCount);
-        //copying posts into the array;
-        for (uint i = 0; i < itemCount; i++) {
-            uint currentId = i + 1;
-            Post storage currentItem = idToPost[currentId];
-            posts[currentIndex] = currentItem;
-            currentIndex += 1;
-            posts[i] = currentItem;
+        // bool participantFound = false;
+
+        // // Check if the participant is in the list of participants
+        // for (uint i = 0; i < hackathons[hackathonID].participants.length; i++) {
+        //     if (hackathons[hackathonID].participants[i] == participantAddress) {
+        //         participantFound = true;
+        //         break;
+        //     }
+        // }
+
+        // // Refund if the participant is found
+        // require(participantFound, "Participant not found");
+        // payable(participantAddress).transfer(hackathons[hackathonID].stakeAmount);
+        
+    }
+
+    function MakeSubmission(bytes memory _githubUrl, uint256 _hackthonId) public payable  {
+        bool  b = true;     
+        for (uint i = 0; i < 19; i++) {
+            if(_githubUrl[i] != gitUrl[i]){
+                b = false;
+                break;
+            }
         }
-        return posts;
+        require(b == true, "not valid git url");
+        Hackathon storage h = hackathons[_hackthonId];
+        h.hasParticipantMadeValidSubmission[msg.sender] = true;
+        payable(msg.sender).transfer(msg.value); 
+
     }
-
-
 
 }

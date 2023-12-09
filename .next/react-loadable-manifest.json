@@ -1,8 +1,1 @@
-{
-  "create-post.js -> react-simplemde-editor": {
-    "id": "./node_modules/react-simplemde-editor/dist/SimpleMdeReact.mjs",
-    "files": [
-      "static/chunks/node_modules_react-simplemde-editor_dist_SimpleMdeReact_mjs.js"
-    ]
-  }
-}
+{}
