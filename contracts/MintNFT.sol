@@ -19,7 +19,7 @@ contract MintNFT is ERC721URIStorage {
 
         uint256 newItemId = _tokenIds.current();
         _mint(player, newItemId);
-        _setTokenURI(newItemId, tokenURI);
+        _setTokenURI(newItemId, tokenURI);a
 
         return newItemId;
     }

@@ -13,6 +13,7 @@ async function getImage(_imageURL) {
 
 export default async function minNFT(
   _imageURL,
+  nftName,
   _hackathonName,
   _hackathonID,
   _participantName
@@ -42,15 +43,7 @@ export default async function minNFT(
 
   console.log('NFT data stored!');
   console.log('Metadata URI: ', metadata.url);
+  return metadata.url;
 }
 
-async function mint() {
-  const result = await minNFT(
-    'https://avatars.githubusercontent.com/u/102853901?v=4',
-    'ETHINDIA23',
-    '12221',
-    'Apoorva Vivek Pendse'
-  );
-}
 
-mint();
