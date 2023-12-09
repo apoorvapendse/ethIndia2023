@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+
 contract Devfolio{
     address public admin;
     uint256 creationAmount;
@@ -10,27 +12,42 @@ contract Devfolio{
 
     bytes public gitUrl = "https://github.com/";
 
-    event HackthonCreated( address organizer,
+    event HackthonCreated( 
+        uint256 hackId,
+        address organizer,
         uint participantCount,
         uint participantLimit,
         uint256 _amountpaid,
         uint256 stakeAmount,
         uint256 expiryTime);
-    event ParticipateHack( address organizer,
+    event ParticipateHack( 
+        uint256 hackId,
+        address organizer,
         uint participantCount,
         uint participantLimit,
         uint256 _amountpaid,
         uint256 stakeAmount,
         uint256 expiryTime);
-    event SubmittedHack(address organizer,
-        uint participantCount,
-        uint participantLimit,
-        uint256 _amountpaid,
-        uint256 stakeAmount,
-        uint256 expiryTime);
+    event SubmittedHack(
+        uint256 hackId,
+        address organizer,
+        bytes giturl);
+    event RevardGiven(address organizer,
+        address indexed nftContract,
+        uint256 indexed tokenId,
+        address participant
+       );
 
 
-   
+//    event MarketItemCreated (
+//     uint indexed itemId,
+//     address indexed nftContract,
+//     uint256 indexed tokenId,
+//     address seller,
+//     address owner,
+//     uint256 price,
+//     bool sold
+//     );
 
     struct Hackathon{
         address organizer;
@@ -72,7 +89,7 @@ contract Devfolio{
 
         hackathonCount++;
         payable(admin).transfer(msg.value); 
-        emit HackthonCreated(newHackathon.organizer,newHackathon.participantCount, msg.value,newHackathon.participantLimit, _stakeAmount ,newHackathon.expiryTime );
+        emit HackthonCreated((hackathonCount - 1),newHackathon.organizer,newHackathon.participantCount, msg.value,newHackathon.participantLimit, _stakeAmount ,newHackathon.expiryTime );
     }
 
     function withdrawHackathonFees() public onlyAdmin{
@@ -90,7 +107,7 @@ contract Devfolio{
         hackathons[hackathonID].hasParticipantMadeValidSubmission[msg.sender] = false;
         hackathons[hackathonID].participantCount++;//increment the participant count;
         payable(admin).transfer(msg.value);
-        emit ParticipateHack( currentHackathon.organizer,currentHackathon.participantCount, msg.value,currentHackathon.participantLimit, currentHackathon.stakeAmount ,currentHackathon.expiryTime );
+        emit ParticipateHack( hackathonID, currentHackathon.organizer,currentHackathon.participantCount, msg.value,currentHackathon.participantLimit, currentHackathon.stakeAmount ,currentHackathon.expiryTime );
     }
 
     // only hackathon organizer can return the stake;
@@ -128,7 +145,45 @@ contract Devfolio{
         Hackathon storage h = hackathons[_hackthonId];
         h.hasParticipantMadeValidSubmission[msg.sender] = true;
         payable(msg.sender).transfer(msg.value); 
+        emit SubmittedHack(
+         _hackthonId,
+         h.organizer,
+         _githubUrl
+        );
 
     }
+
+    function giveawayCertificate(
+    address nftContract,
+    uint256 tokenId,
+    uint256 price,
+    address receiver
+  ) public payable  {
+
+    require(price > 0, "Price must be at least 1 wei");
+    //require(msg.value == listingPrice, "Price must be equal to listing price");
+
+    
+   
+    //transfer ownership to contract
+    IERC721(nftContract).transferFrom(msg.sender, address(this), tokenId);
+    IERC721(nftContract).transferFrom(address(this), msg.sender, tokenId);
+
+    emit RevardGiven(
+        msg.sender,
+      nftContract,
+      tokenId,
+      receiver
+    
+   
+    );
+  }
+
+
+
+    /* Creates the sale of a marketplace item */
+  /* Transfers ownership of the item, as well as funds between parties */
+  //buy item
+  
 
 }
