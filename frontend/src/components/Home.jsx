@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import {Link} from 'react-router-dom'
 import { PlanCard,Button,Typography } from '@web3uikit/core';
 const Home = () => {
@@ -110,4 +111,17 @@ const Home = () => {
 }
 
 >>>>>>> 9b93d2e2e86d811d72aa3777c68ddde2063258ac
+=======
+import {Link} from 'react-router-dom'
+import NavBar from './Navbar'
+const Home = () => {
+  return (
+    <>
+    <NavBar/>
+    <h1>Home</h1>
+    </>
+  )
+}
+
+>>>>>>> 1a4e078325c592355fac23a4af3da3a59d0bc43f
 export default Home

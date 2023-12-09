@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import abiData from '../NFT_ABI/NFTabi.js';
 import { ethers } from 'ethers';
 import minNFT from '../../nftUpload/uploadNFT.js';
+import Navbar from './Navbar.jsx';
 
 const ParticipationNFT = () => {
   const [account, setAccount] = useState();
@@ -77,7 +78,7 @@ const ParticipationNFT = () => {
 
       // Handle the result or add additional logic as needed
       console.log('NFT Minted:', result);
-      const tokenNumber = await contract.awardItem(account,result);
+      const tokenNumber = await contract.awardItem(account,result);//the participant will have to manually request for his NFT;
       console.log("NFT token number:",tokenNumber);
     } catch (error) {
       console.error('Error Minting NFT:', error.message);
@@ -85,6 +86,8 @@ const ParticipationNFT = () => {
   }
 
   return (
+
+<>    <Navbar/>
     <form onSubmit={handleSubmit}>
       <label>
         Image URL:
@@ -94,7 +97,7 @@ const ParticipationNFT = () => {
           value={imageUrl}
           onChange={(e) => setImageUrl(e.target.value)}
           required
-        />
+          />
       </label>
       <br />
       <label>
@@ -105,7 +108,7 @@ const ParticipationNFT = () => {
           value={nftName}
           onChange={(e) => setNftName(e.target.value)}
           required
-        />
+          />
       </label>
       <br />
       <label>
@@ -116,7 +119,7 @@ const ParticipationNFT = () => {
           value={nftDesc}
           onChange={(e) => setNftDesc(e.target.value)}
           required
-        />
+          />
       </label>
       <br />
       <label>
@@ -138,7 +141,7 @@ const ParticipationNFT = () => {
           value={hackathonId}
           onChange={(e) => setHackathonId(e.target.value)}
           required
-        />
+          />
       </label>
       <br />
       <label>
@@ -160,11 +163,12 @@ const ParticipationNFT = () => {
           value={participantId}
           onChange={(e) => setParticipantId(e.target.value)}
           required
-        />
+          />
       </label>
       <br />
       <button type="submit">Generate and Send NFT</button>
     </form>
+          </>
   );
 };
 
