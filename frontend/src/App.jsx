@@ -3,12 +3,14 @@ import './App.css';
 import ParticipationNFT from './components/ParticipationNFT';
 import Home from './components/Home';
 import abi from './NFT_ABI/NFTabi.js'
-<<<<<<< HEAD
-import CreateHack from './components/Create.jsx';
-import SubmitHack from './components/Submut.jsx';
-=======
 import Navbar from './components/Navbar.jsx';
->>>>>>> 1a4e078325c592355fac23a4af3da3a59d0bc43f
+import ParticipateInHackathon from './components/ParticipateInHackathon.jsx';
+import ListHackathons from './components/ListHackathons.jsx';
+import Register from './components/Register.jsx';
+import CreateHackathon from './components/CreateHackathon.jsx';
+import Detail from './components/Detail.jsx';
+import Submit from './components/Submit.jsx';
+
 
 function App() {
 
@@ -18,11 +20,14 @@ function App() {
 
     <BrowserRouter>
       <Routes>
-    
-        <Route path="/" element={<Home />} />
+      <Route path="/" element={<Home />} />
         <Route path="/mint" element={<ParticipationNFT />} />
-        <Route path="/new" element={<CreateHack />} />
-        <Route path="/submit" element={<SubmitHack/>} />
+        <Route path="/participate/:hackathon_id" element={<ParticipateInHackathon />} />
+        <Route path="/list" element={<ListHackathons />} />
+        <Route path="/register/:hackathon_id" element={<Register />} />
+        <Route path="/create-hackathon" element={<CreateHackathon />} />
+        <Route path="/detail" element={<Detail/>} />
+        <Route path="/submit" element={<Submit/>} />
       </Routes>
     </BrowserRouter>
   );

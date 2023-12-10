@@ -16,7 +16,11 @@ import AdbIcon from '@mui/icons-material/Adb';
 
 const pages = [
   {url:"/",name:'Home'},
-  {url:"/mint",name:'Mint'}
+  {url:"/mint",name:'Mint'},
+  {url:"/list",name:'List'},
+  {url:"/create-hackathon",name:'Create Hackathon'},
+  {url:"/detail",name:'Detail'},
+  {url:"/submit",name:'Submit'},
 
 ];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -114,6 +118,7 @@ function NavBar() {
               </Button>
             ))}
           </Box>
+          
 
           
         </Toolbar>
