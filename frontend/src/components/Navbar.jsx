@@ -19,6 +19,7 @@ const pages = [
   {url:"/mint",name:'Mint'},
   {url:"/list",name:'List'},
   {url:"/create-hackathon",name:'Create Hackathon'},
+
   {url:"/detail",name:'Detail'},
   {url:"/submit",name:'Submit'},
 
