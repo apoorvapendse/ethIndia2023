@@ -1,4 +1,5 @@
 require("@nomiclabs/hardhat-waffle");
+require("@nomiclabs/hardhat-etherscan")
 const fs = require("fs");
 const privateKey = fs.readFileSync(".secret").toString()
 
@@ -26,6 +27,21 @@ module.exports = {
     //   url: "https://polygon-rpc.com/",
     //   accounts: [process.env.pk]
     // }
+  },
+  etherscan: {
+    apiKey: {
+      scrollSepolia: 'IJH11QFJ5RDV5FA38Y8M2WVA647NHCIR9J',
+    },
+    customChains: [
+      {
+        network: 'scrollSepolia',
+        chainId: 534351,
+        urls: {
+          apiURL: 'https://sepolia-rpc.scroll.io/api',
+          browserURL: 'https://sepolia-rpc.scroll.io/',
+        },
+      },
+    ],
   }
 };
 

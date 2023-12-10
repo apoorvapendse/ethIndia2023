@@ -1,8 +1,12 @@
-
 // SPDX-License-Identifier: MIT
+
+
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+
+
+ 
 
 contract Devfolio{
     address public admin;
@@ -24,15 +28,14 @@ contract Devfolio{
     event ParticipateHack( 
         uint256 hackId,
         address organizer,
-        uint participantCount,
-        uint participantLimit,
-        uint256 _amountpaid,
-        uint256 stakeAmount,
-        uint256 expiryTime);
+        address partcipant,
+        uint256 money
+        
+     );
     event SubmittedHack(
         uint256 hackId,
         address organizer,
-        bytes giturl);
+        string giturl);
     event RevardGiven(address organizer,
         address indexed nftContract,
         uint256 indexed tokenId,
@@ -52,6 +55,7 @@ contract Devfolio{
 
     struct Hackathon{
         address organizer;
+        string name;
         uint participantCount;
         uint participantLimit;
         mapping(address => bool) hasParticipantMadeValidSubmission;
@@ -78,7 +82,7 @@ contract Devfolio{
         _;
     }
 
-    function createHackathon(uint _participantLimit, uint256 _stakeAmount, uint256 timeInSeconds) external payable {
+    function createHackathon(string memory _name, uint _participantLimit, uint256 _stakeAmount, uint256 timeInSeconds) external payable {
         require(msg.value >= creationAmount, "Insufficient amount to create hackathon");
 
         Hackathon storage newHackathon = hackathons[hackathonCount];
@@ -87,6 +91,7 @@ contract Devfolio{
         newHackathon.participantCount = 0;
         newHackathon.stakeAmount = _stakeAmount;
         newHackathon.expiryTime = block.timestamp + timeInSeconds;
+        newHackathon.name = _name;
 
         hackathonCount++;
         payable(admin).transfer(msg.value); 
@@ -108,7 +113,7 @@ contract Devfolio{
         hackathons[hackathonID].hasParticipantMadeValidSubmission[msg.sender] = false;
         hackathons[hackathonID].participantCount++;//increment the participant count;
         payable(admin).transfer(msg.value);
-        emit ParticipateHack( hackathonID, currentHackathon.organizer,currentHackathon.participantCount, msg.value,currentHackathon.participantLimit, currentHackathon.stakeAmount ,currentHackathon.expiryTime );
+        emit ParticipateHack( hackathonID, currentHackathon.organizer, msg.sender, msg.value);
     }
 
     // only hackathon organizer can return the stake;
@@ -134,15 +139,9 @@ contract Devfolio{
         
     }
 
-    function MakeSubmission(bytes memory _githubUrl, uint256 _hackthonId) public payable  {
-        bool  b = true;     
-        for (uint i = 0; i < 19; i++) {
-            if(_githubUrl[i] != gitUrl[i]){
-                b = false;
-                break;
-            }
-        }
-        require(b == true, "not valid git url");
+    function MakeSubmission( string memory _githubUrl, uint256 _hackthonId) public payable  {     
+       
+        //require(b == true, "not valid git url");
         Hackathon storage h = hackathons[_hackthonId];
         h.hasParticipantMadeValidSubmission[msg.sender] = true;
         payable(msg.sender).transfer(msg.value); 
@@ -179,11 +178,7 @@ contract Devfolio{
    
     );
   }
+}
 
 
-
-    /* Creates the sale of a marketplace item */
-  /* Transfers ownership of the item, as well as funds between parties */
-  //buy item
-  
-
+    

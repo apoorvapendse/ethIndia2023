@@ -20,6 +20,9 @@ const pages = [
   {url:"/list",name:'List'},
   {url:"/create-hackathon",name:'Create Hackathon'},
 
+  {url:"/detail",name:'Detail'},
+  {url:"/submit",name:'Submit'},
+
 ];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -116,6 +119,7 @@ function NavBar() {
               </Button>
             ))}
           </Box>
+          
 
           
         </Toolbar>
